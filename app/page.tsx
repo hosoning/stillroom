@@ -84,11 +84,6 @@ export default function Home() {
   return (
     <main>
       <div className="ambient" aria-hidden="true"><span /><span /><span /></div>
-      <nav className="nav" aria-label="Stillroom">
-        <a className="wordmark" href="#top" aria-label="Stillroom home"><i />STILLROOM</a>
-        <span>A quiet conversation</span>
-      </nav>
-
       <section className="hero" id="top">
         <div className="eyebrow"><span />Take a breath. Think of someone.</div>
         <h1>Who do you need<br />right now?</h1>
@@ -110,7 +105,7 @@ export default function Home() {
                 <div className="suggestions" role="listbox" aria-label="Character suggestions">
                   {suggestions.map((character) => (
                     <button key={character.name} type="button" onClick={() => setName(character.name)}>
-                      <span>{character.name}</span><small>{character.source}</small>
+                      <span>{character.name}</span>
                     </button>
                   ))}
                 </div>
@@ -127,7 +122,6 @@ export default function Home() {
           <section className="reply-card" key={sequence} ref={replyRef} tabIndex={-1} aria-live="polite" aria-label="Your reply">
             <div className="reply-topline">
               <span>{match ? match.name : submittedName}</span>
-              <span>For you, right now</span>
             </div>
             <div className="reply-copy">
               {reply.map((line) => <p key={line}>{line}</p>)}
@@ -136,15 +130,10 @@ export default function Home() {
               <button type="button" onClick={() => { setReply(buildReply(match)); setSequence((value) => value + 1); }}>
                 Another reply <span aria-hidden="true">↗</span>
               </button>
-              <span>Stay as long as you need</span>
             </div>
           </section>
         )}
-
-        <div className="scroll-note" aria-hidden="true"><span />Take your time</div>
       </section>
-
-      <footer><span>STILLROOM</span><span>Nothing leaves this room.</span></footer>
     </main>
   );
 }
