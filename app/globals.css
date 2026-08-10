@@ -33,9 +33,6 @@ input::placeholder { color:#68646d; }
 .submit:hover:not(:disabled) { background:#a481ae;color:#110f15;transform:translateY(-2px); }
 .submit:disabled { opacity:.35;cursor:not-allowed; }
 .hint { font-size:11px;color:#77727b;letter-spacing:.025em;margin:11px 0 0; }
-.suggestions { position:absolute;left:0;right:12px;top:64px;background:#18151f;border:1px solid var(--line);box-shadow:0 22px 60px rgba(0,0,0,.45);z-index:10;padding:5px; }
-.suggestions button { width:100%;background:none;border:0;display:flex;justify-content:space-between;padding:11px 13px;cursor:pointer;text-align:left; }
-.suggestions button:hover { background:rgba(255,255,255,.06); }
 .reply-card { margin:58px 0 20px;max-width:860px;border:1px solid var(--line);background:linear-gradient(135deg,rgba(33,28,40,.9),rgba(17,15,23,.72));padding:24px 30px 28px;box-shadow:0 30px 90px rgba(0,0,0,.3);animation:arrive .75s cubic-bezier(.2,.8,.2,1) both;outline:none; }
 @keyframes arrive { from { opacity:0;transform:translateY(18px);filter:blur(5px); } }
 .reply-topline,.reply-actions { display:flex;justify-content:space-between;gap:20px;color:#8d8790;font-size:10px;text-transform:uppercase;letter-spacing:.16em; }
@@ -50,7 +47,7 @@ input::placeholder { color:#68646d; }
 .scroll-note span { width:1px;height:45px;background:#5f5a63; }
 @media (max-width:700px) {
   .hero { padding:12vh 20px 50px;min-height:100vh; }.intro { font-size:16px; }
-  .input-row { grid-template-columns:1fr;gap:12px;border:0; }.input-wrap { border-bottom:1px solid rgba(255,255,255,.3); }.submit { width:100%; }.suggestions { right:0; }
+  .input-row { grid-template-columns:1fr;gap:12px;border:0; }.input-wrap { border-bottom:1px solid rgba(255,255,255,.3); }.submit { width:100%; }
   .reply-card { margin-top:42px;padding:20px; }.reply-topline span:last-child,.reply-actions>span { display:none; }.scroll-note { display:none; }
 }
 @media (prefers-reduced-motion:reduce) { html{scroll-behavior:auto}.ambient span,.reply-card{animation:none}.submit{transition:none} }
