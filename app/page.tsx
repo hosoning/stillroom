@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { characters, generalResponses } from "./data";
 
 type Match = (typeof characters)[number] | null;
@@ -64,15 +64,16 @@ export default function Home() {
   const [submittedName, setSubmittedName] = useState("");
   const [sequence, setSequence] = useState(0);
   const replyRef = useRef<HTMLElement>(null);
-  const suggestions = useMemo(() => {
-    const query = normalize(name);
-    if (!query) return [];
-    return characters.filter((c) => normalize(c.name).includes(query) || c.aliases.some((a) => normalize(a).includes(query))).slice(0, 5);
-  }, [name]);
+
+  useEffect(() => {
+    const rememberedName = window.localStorage.getItem("stillroom:last-character");
+    if (rememberedName) setName(rememberedName);
+  }, []);
 
   function submit(event?: FormEvent) {
     event?.preventDefault();
     if (!name.trim()) return;
+    window.localStorage.setItem("stillroom:last-character", name.trim());
     const found = findCharacter(name);
     setMatch(found);
     setSubmittedName(name.trim());
@@ -101,15 +102,6 @@ export default function Home() {
                 placeholder="Enter their name"
                 aria-describedby="search-hint"
               />
-              {suggestions.length > 0 && normalize(name) !== normalize(suggestions[0].name) && (
-                <div className="suggestions" role="listbox" aria-label="Character suggestions">
-                  {suggestions.map((character) => (
-                    <button key={character.name} type="button" onClick={() => setName(character.name)}>
-                      <span>{character.name}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
             <button className="submit" type="submit" disabled={!name.trim()}>
               Get a reply <span aria-hidden="true">→</span>
