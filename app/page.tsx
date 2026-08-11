@@ -8,6 +8,13 @@ type Match = (typeof characters)[number] | null;
 const normalize = (value: string) =>
   value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
+const ambiguousShortNames = new Set([
+  "victor", "gavin", "lucien", "kiro", "shaw", "luke", "artem", "marius",
+  "harry", "peter", "tony", "bucky", "steve", "bruce", "jason", "clark",
+  "diana", "percy", "will", "jude", "john", "leon", "carlos", "chris",
+  "sebastian", "elliott", "shane", "harvey", "connor", "hank", "ellie", "joel",
+]);
+
 function distance(a: string, b: string) {
   const row = Array.from({ length: b.length + 1 }, (_, i) => i);
   for (let i = 1; i <= a.length; i++) {
@@ -26,7 +33,11 @@ function findCharacter(input: string): Match {
   const query = normalize(input);
   if (!query) return null;
   const exact = characters.find((character) =>
-    [character.name, ...character.aliases].some((alias) => normalize(alias) === query),
+    [character.name, ...character.aliases].some((alias) => {
+      const candidate = normalize(alias);
+      if (candidate !== query) return false;
+      return !ambiguousShortNames.has(query);
+    }),
   );
   if (exact) return exact;
   if (query.length < 4) return null;
@@ -34,6 +45,7 @@ function findCharacter(input: string): Match {
   for (const character of characters) {
     for (const alias of [character.name, ...character.aliases]) {
       const candidate = normalize(alias);
+      if (ambiguousShortNames.has(query) && !query.includes(" ")) continue;
       const allowed = query.length >= 9 ? 2 : 1;
       const score = distance(query, candidate);
       if (score <= allowed && (!best || score < best.score)) best = { character, score };
@@ -113,7 +125,7 @@ export default function Home() {
         {reply.length > 0 && (
           <section className="reply-card" key={sequence} ref={replyRef} tabIndex={-1} aria-live="polite" aria-label="Your reply">
             <div className="reply-topline">
-              <span>{match ? match.name : submittedName}</span>
+              <span>{submittedName}</span>
             </div>
             <div className="reply-copy">
               {reply.map((line) => <p key={line}>{line}</p>)}
